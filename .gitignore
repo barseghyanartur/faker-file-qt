@@ -35,3 +35,4 @@ local_settings.py
 *.cast
 .ipynb_checkpoints/
 .scannerwork/
+/docs/_build
