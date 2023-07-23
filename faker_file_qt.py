@@ -1,5 +1,6 @@
 import ast
 import inspect
+import logging
 import sys
 from typing import Any, AnyStr, Dict, List, Tuple, Union, get_args, get_origin
 
@@ -83,7 +84,7 @@ __all__ = (
     "str_to_type",
 )
 
-
+LOGGER = logging.getLogger(__name__)
 FAKER = Faker()
 
 KWARGS_DROP = {
@@ -363,17 +364,19 @@ class FakerFileApp(QWidget):
                 if "model_props" in value and value["model_props"]:
                     kwargs.update(value["model_props"])
 
-        print(kwargs)
         file_type = get_item_key(self.list_widget.currentItem())
         provider = PROVIDERS[file_type]
         method = getattr(provider(FAKER), file_type)
-        print(kwargs)
+
         try:
             result = method(**kwargs)  # Get your result here
+            result_text = result.data["filename"]
         except Exception as err:
-            print(err)
+            LOGGER.debug(kwargs)
+            LOGGER.exception(err)
             result = None
-        self.result_widget.setText(str(result))  # Display the result
+            result_text = ""
+        self.result_widget.setText(str(result_text))  # Display the result
 
 
 def main():

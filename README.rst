@@ -72,6 +72,8 @@ PyQT UI for `faker-file`_.
 .. _poppler: https://poppler.freedesktop.org/
 .. _python-docx: https://python-docx.readthedocs.io/
 .. _python-pptx: https://python-pptx.readthedocs.io/
+.. _PyQT5: https://pypi.org/project/PyQt5/
+.. _QDarkStyle: https://pypi.org/project/QDarkStyle/
 .. _reportlab: https://pypi.org/project/reportlab/
 .. _tablib: https://tablib.readthedocs.io/
 .. _tika: https://pypi.org/project/tika/
@@ -81,21 +83,13 @@ PyQT UI for `faker-file`_.
 
 Prerequisites
 =============
-- faker-file[common]
-- QDarkStyle
-- PyQT5
+- `faker-file`_ (``faker-file[common]``)
+- `QDarkStyle`_
+- `PyQT5`_
 
 Documentation
 =============
 - Documentation is available on `Read the Docs`_.
-
-Online demos
-============
-Check the demo(s):
-
-- `REST API demo`_ (based on `faker-file-api`_ REST API)
-- `UI frontend demo`_ (based on `faker-file-ui`_ UI frontend)
-- `WASM frontend demo`_ (based on `faker-file-wasm`_ WASM frontend)
 
 Installation
 ============
@@ -174,3 +168,11 @@ For overall issues, go to `GitHub <https://github.com/barseghyanartur/faker-file
 Author
 ======
 Artur Barseghyan <artur.barseghyan@gmail.com>
+
+Related projects
+================
+Check the demo(s):
+
+- `REST API demo`_ (based on `faker-file-api`_ REST API)
+- `UI frontend demo`_ (based on `faker-file-ui`_ UI frontend)
+- `WASM frontend demo`_ (based on `faker-file-wasm`_ WASM frontend)

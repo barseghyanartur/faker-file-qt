@@ -1,3 +1,6 @@
+import logging
+import os
+import tempfile
 import unittest
 
 import pytest
@@ -61,6 +64,8 @@ __copyright__ = "2022-2023 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = ("TestFakerFileApp",)
 
+LOGGER = logging.getLogger(__name__)
+
 
 class TestFakerFileApp(unittest.TestCase):
     __PROVIDERS = (
@@ -113,8 +118,8 @@ class TestFakerFileApp(unittest.TestCase):
             widget.list_widget.setCurrentRow(i)
             item = widget.list_widget.currentItem()
             item_key = get_item_key(item)
-            print(item)
-            print(item_key)
+            LOGGER.debug(item)
+            LOGGER.debug(item_key)
 
             # Fill form with test data
             prefix = f"my_file_{item_key}"
@@ -140,7 +145,9 @@ class TestFakerFileApp(unittest.TestCase):
             result = widget.result_widget.toPlainText()
             # Assuming the result should contain the text "File generated"
             self.assertTrue(
-                result.startswith(f"tmp/{prefix}"),
+                result.startswith(
+                    os.path.join(tempfile.gettempdir(), "tmp", prefix)
+                ),
                 f"Unexpected result: {result} for {item_key}",
             )
 
