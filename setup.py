@@ -41,7 +41,6 @@ setup(
     description="PyQT UI for faker-file.",
     long_description=readme,
     classifiers=[
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -70,7 +69,7 @@ setup(
     url="https://github.com/barseghyanartur/faker-file-qt/",
     py_modules=["faker_file_qt"],
     license="MIT",
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     install_requires=install_requires,
     extras_require=extras_require,
     tests_require=tests_require,
