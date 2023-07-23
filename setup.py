@@ -17,7 +17,16 @@ install_requires = [
     "Pillow<=9.5.0",
 ]
 
-extras_require = []
+extras_require = {
+    "dev": [
+        "black",
+        "doc8",
+        "detect-secrets",
+        "isort",
+        "ipython",
+        "ruff",
+    ]
+}
 
 tests_require = [
     "pytest",
@@ -59,7 +68,8 @@ setup(
     py_modules=["faker_file_qt"],
     license="MIT",
     python_requires=">=3.7",
-    install_requires=(install_requires + extras_require),
+    install_requires=install_requires,
+    extras_require=extras_require,
     tests_require=tests_require,
     include_package_data=True,
 )

@@ -106,6 +106,12 @@ Or development version from GitHub
 
     pipx install https://github.com/barseghyanartur/faker-file-qt/archive/main.tar.gz
 
+Install locally in development mode
+-----------------------------------
+.. code-block:: sh
+
+    pip install -e .[dev]
+
 Running
 =======
 .. code-block:: sh

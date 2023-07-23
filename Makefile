@@ -35,6 +35,9 @@ isort:
 ruff:
 	ruff .
 
+doc8:
+	doc8 .
+
 # Run fluff for SQL linting, assuming you're using SQLFluff
 fluff:
 	sqlfluff lint .
@@ -46,3 +49,9 @@ build_docs:
 # Rebuild documentation
 rebuild_docs: clean
 	cd docs && make html
+
+detect-secrets-create-baseline:
+	detect-secrets scan > .secrets.baseline
+
+detect-secrets-update-baseline:
+	detect-secrets scan --baseline .secrets.baseline
