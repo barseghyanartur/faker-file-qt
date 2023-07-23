@@ -54,7 +54,9 @@ setup(
         "Development Status :: 4 - Beta",
     ],
     project_urls={
-        "Bug Tracker": "https://github.com/barseghyanartur/faker-file-qt/issues",
+        "Bug Tracker": (
+            "https://github.com/barseghyanartur/faker-file-qt/issues"
+        ),
         "Documentation": "https://faker-file-qt.readthedocs.io/",
         "Source Code": "https://github.com/barseghyanartur/faker-file-qt/",
         "Changelog": "https://faker-file-qt.readthedocs.io/"

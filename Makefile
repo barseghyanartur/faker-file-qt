@@ -33,7 +33,7 @@ isort:
 
 # Run ruff
 ruff:
-	ruff .
+	ruff check .
 
 doc8:
 	doc8 .
