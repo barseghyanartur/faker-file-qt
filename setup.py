@@ -20,11 +20,12 @@ install_requires = [
 extras_require = {
     "dev": [
         "black",
-        "doc8",
         "detect-secrets",
-        "isort",
+        "doc8",
         "ipython",
+        "isort",
         "ruff",
+        "twine",
     ]
 }
 
