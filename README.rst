@@ -126,6 +126,14 @@ Or use tox:
 
     tox
 
+Related projects
+================
+Check the demo(s):
+
+- `REST API demo`_ (based on `faker-file-api`_ REST API)
+- `UI frontend demo`_ (based on `faker-file-ui`_ UI frontend)
+- `WASM frontend demo`_ (based on `faker-file-wasm`_ WASM frontend)
+
 Writing documentation
 =====================
 
@@ -168,11 +176,3 @@ For overall issues, go to `GitHub <https://github.com/barseghyanartur/faker-file
 Author
 ======
 Artur Barseghyan <artur.barseghyan@gmail.com>
-
-Related projects
-================
-Check the demo(s):
-
-- `REST API demo`_ (based on `faker-file-api`_ REST API)
-- `UI frontend demo`_ (based on `faker-file-ui`_ UI frontend)
-- `WASM frontend demo`_ (based on `faker-file-wasm`_ WASM frontend)
