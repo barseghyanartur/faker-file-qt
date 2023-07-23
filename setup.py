@@ -38,7 +38,7 @@ tests_require = [
 setup(
     name="faker-file-qt",
     version=version,
-    description="QT frontend for faker-file.",
+    description="PyQT UI for faker-file.",
     long_description=readme,
     classifiers=[
         "Programming Language :: Python :: 3.7",
