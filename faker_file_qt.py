@@ -1,6 +1,8 @@
 import ast
 import inspect
 import logging
+import platform
+import subprocess
 import sys
 from typing import Any, AnyStr, Dict, List, Tuple, Union, get_args, get_origin
 
@@ -81,6 +83,7 @@ __all__ = (
     "get_item_key",
     "get_label_text",
     "main",
+    "open_file_with_default_app",
     "str_to_type",
 )
 
@@ -239,8 +242,23 @@ def get_item_key(item) -> str:
     return item.data(QtCore.Qt.UserRole)
 
 
+def open_file_with_default_app(file_path: str) -> None:
+    """Open file with default app.
+
+    Example usage:
+
+        open_file_with_default_app("/path/to/the/file.ext")
+    """
+    if platform.system() == "Darwin":  # macOS
+        subprocess.run(("open", file_path))
+    elif platform.system() == "Windows":  # Windows
+        subprocess.run(("start", file_path), shell=True)
+    else:  # linux variants
+        subprocess.run(("xdg-open", file_path))
+
+
 class FakerFileApp(QWidget):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.param_widgets = {}
@@ -250,7 +268,7 @@ class FakerFileApp(QWidget):
 
         self.initUI()
 
-    def initUI(self):
+    def initUI(self) -> None:
         # Set window size
         self.setGeometry(200, 200, 960, 600)
 
@@ -273,27 +291,25 @@ class FakerFileApp(QWidget):
         form_wrapper_layout.addStretch(1)
         form_wrapper.setLayout(form_wrapper_layout)
 
-        self.result_widget = QTextEdit()
+        self.result_widget = QListWidget()
+        self.result_widget.itemClicked.connect(self.handle_result_item_click)
 
         for file_type in PROVIDERS.keys():
             list_item = QListWidgetItem(get_label_text(file_type))
             # Store the original string in the UserRole data role
             list_item.setData(QtCore.Qt.UserRole, file_type)
             self.list_widget.addItem(list_item)
-            # self.list_widget.addItem(file_type)
 
         self.list_widget.setCurrentRow(0)
         self.list_widget.itemClicked.emit(self.list_widget.currentItem())
 
         layout.addWidget(self.list_widget, -1)
-        # layout.addWidget(self.form_widget, 1)
         layout.addWidget(form_wrapper, 3)
         layout.addWidget(self.result_widget, 3)
         self.setLayout(layout)
 
-    def show_form(self, item):
+    def show_form(self, item) -> None:
         file_type = get_item_key(item)
-        # file_type = item.text()
         provider = PROVIDERS[file_type]
 
         method = getattr(provider(FAKER), file_type)
@@ -320,7 +336,6 @@ class FakerFileApp(QWidget):
 
                 self.form_layout.addWidget(label)
                 self.form_layout.addWidget(line_edit)
-                # self.form_layout.addRow(label, line_edit)
 
                 self.param_widgets[
                     arg
@@ -333,7 +348,7 @@ class FakerFileApp(QWidget):
         generate_button.clicked.connect(self.generate_result)
         self.form_layout.addWidget(generate_button)
 
-    def generate_result(self):
+    def generate_result(self) -> None:
         kwargs = {}
 
         # Extract the values from the QLineEdit widgets and convert them to
@@ -344,7 +359,8 @@ class FakerFileApp(QWidget):
                 input_value = widget.toPlainText().strip()
             elif isinstance(widget, QLineEdit):
                 input_value = widget.text().strip()
-
+            else:
+                input_value = None
             type_annotation = self.param_annotations[param]
 
             # If the input value is not empty, convert it to its appropriate
@@ -354,7 +370,6 @@ class FakerFileApp(QWidget):
             else:  # If the input value is empty, use None
                 converted_value = None
             if input_value:
-                # kwargs[param] = input_value
                 kwargs[param] = converted_value
 
         # Add the overrides here if necessary
@@ -376,10 +391,15 @@ class FakerFileApp(QWidget):
             LOGGER.exception(err)
             result = None
             result_text = ""
-        self.result_widget.setText(str(result_text))  # Display the result
+
+        self.result_widget.addItem(str(result_text))  # Display the result
+        self.result_widget.setCurrentRow(self.result_widget.count() - 1)
+
+    def handle_result_item_click(self, item) -> None:
+        open_file_with_default_app(item.text())
 
 
-def main():
+def main() -> None:
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     # app.setStyleSheet(

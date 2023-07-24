@@ -142,7 +142,7 @@ class TestFakerFileApp(unittest.TestCase):
             QTest.mouseClick(generate_button, Qt.LeftButton)
 
             # Check result
-            result = widget.result_widget.toPlainText()
+            result = widget.result_widget.currentItem().text()
             # Assuming the result should contain the text "File generated"
             self.assertTrue(
                 result.startswith(

@@ -16,6 +16,7 @@ extend-exclude = '''
   | tests/data
   | profiling
   | migrations
+  | .tox
 )/
 '''
 
@@ -36,7 +37,7 @@ ensure_newline_before_comments = true
 line_length = 80
 known_first_party = "faker_file_qt"
 known_third_party = ["factory"]
-skip = ["wsgi.py",]
+skip = ["wsgi.py", ".tox"]
 
 [tool.ruff]
 line-length = 80
@@ -76,10 +77,11 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 target-version = "py310"
 
 [tool.pyright]
-include = ["src"]
+include = ["faker_file_qt.py", "tests.py", "setup.py"]
 exclude = ["**/node_modules",
     "**/__pycache__",
-    "tmp"
+    "tmp",
+    ".tox"
 ]
 ignore = ["src/oldstuff"]
 defineConstant = { DEBUG = true }
