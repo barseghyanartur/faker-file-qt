@@ -4,7 +4,7 @@
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
-	rm .coverage
+	rm -f .coverage
 	rm -rf .pytest_cache
 	rm -rf build dist *.egg-info
 	rm -rf docs/_build
