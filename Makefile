@@ -9,6 +9,7 @@ clean:
 	rm -rf build dist *.egg-info
 	rm -rf docs/_build
 	rm -rf htmlcov
+	rm -rf .tox/
 
 # Install the package locally for development
 install:
