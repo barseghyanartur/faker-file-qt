@@ -61,6 +61,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import (
     QApplication,
     QFormLayout,
+    QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
@@ -235,7 +236,7 @@ def str_to_type(s: str, t: type) -> Any:
 
 
 def get_label_text(name: str) -> str:
-    return name.replace("_", " ")
+    return name.replace("_file", "").replace("_", " ")
 
 
 def get_item_key(item) -> str:
@@ -266,15 +267,62 @@ class FakerFileApp(QWidget):
         self.param_annotations = {}
         self.initUI()
 
+    #
+    # def initUI(self: "FakerFileApp") -> None:
+    #     # Set window size
+    #     self.setGeometry(200, 200, 960, 600)
+    #
+    #     # Create a QHBoxLayout
+    #     layout = QHBoxLayout()
+    #
+    #     self.list_widget = QListWidget()
+    #     self.list_widget.itemClicked.connect(self.show_form)
+    #
+    #     self.form_widget = QWidget()
+    #     self.form_widget.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+    #     self.form_layout = QFormLayout(self.form_widget)
+    #     self.form_layout.setContentsMargins(
+    #         10, 10, 10, 10
+    #     )  # set some margins for spacing
+    #
+    #     form_wrapper = QWidget()
+    #     form_wrapper_layout = QVBoxLayout()
+    #     form_wrapper_layout.addWidget(self.form_widget)
+    #     form_wrapper_layout.addStretch(1)
+    #     form_wrapper.setLayout(form_wrapper_layout)
+    #
+    #     self.result_widget = QListWidget()
+    #     self.result_widget.itemDoubleClicked.connect(
+    #         self.handle_result_item_click
+    #     )
+    #
+    #     for file_type in PROVIDERS.keys():
+    #         list_item = QListWidgetItem(get_label_text(file_type))
+    #         # Store the original string in the UserRole data role
+    #         list_item.setData(QtCore.Qt.UserRole, file_type)
+    #         self.list_widget.addItem(list_item)
+    #
+    #     self.list_widget.setCurrentRow(0)
+    #     self.list_widget.itemClicked.emit(self.list_widget.currentItem())
+    #
+    #     layout.addWidget(self.list_widget, -1)
+    #     layout.addWidget(form_wrapper, 3)
+    #     layout.addWidget(self.result_widget, 3)
+    #     self.setLayout(layout)
+
     def initUI(self: "FakerFileApp") -> None:
         # Set window size
-        self.setGeometry(200, 200, 960, 600)
+        self.setGeometry(200, 200, 960, 720)
 
         # Create a QHBoxLayout
         layout = QHBoxLayout()
 
         self.list_widget = QListWidget()
         self.list_widget.itemClicked.connect(self.show_form)
+        list_group = QGroupBox("File type")  # create a group box
+        list_layout = QVBoxLayout()  # create a layout for the group box
+        list_layout.addWidget(self.list_widget)
+        list_group.setLayout(list_layout)
 
         self.form_widget = QWidget()
         self.form_widget.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -282,15 +330,20 @@ class FakerFileApp(QWidget):
         self.form_layout.setContentsMargins(
             10, 10, 10, 10
         )  # set some margins for spacing
-
-        form_wrapper = QWidget()
-        form_wrapper_layout = QVBoxLayout()
-        form_wrapper_layout.addWidget(self.form_widget)
-        form_wrapper_layout.addStretch(1)
-        form_wrapper.setLayout(form_wrapper_layout)
+        form_group = QGroupBox("Options")  # create a group box
+        form_layout = QVBoxLayout()  # create a layout for the group box
+        form_layout.addWidget(self.form_widget)
+        form_layout.addStretch(1)  # Add stretch to bottom
+        form_group.setLayout(form_layout)
 
         self.result_widget = QListWidget()
-        self.result_widget.itemClicked.connect(self.handle_result_item_click)
+        self.result_widget.itemDoubleClicked.connect(
+            self.handle_result_item_click
+        )
+        result_group = QGroupBox("Results")  # create a group box
+        result_layout = QVBoxLayout()  # create a layout for the group box
+        result_layout.addWidget(self.result_widget)
+        result_group.setLayout(result_layout)
 
         for file_type in PROVIDERS.keys():
             list_item = QListWidgetItem(get_label_text(file_type))
@@ -301,9 +354,9 @@ class FakerFileApp(QWidget):
         self.list_widget.setCurrentRow(0)
         self.list_widget.itemClicked.emit(self.list_widget.currentItem())
 
-        layout.addWidget(self.list_widget, -1)
-        layout.addWidget(form_wrapper, 3)
-        layout.addWidget(self.result_widget, 3)
+        layout.addWidget(list_group, -1)
+        layout.addWidget(form_group, 3)
+        layout.addWidget(result_group, 3)
         self.setLayout(layout)
 
     def show_form(self: "FakerFileApp", item: "QListWidgetItem") -> None:
