@@ -15,8 +15,15 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.1.1
+-----
+2023-07-25
+
+- UI improvements.
+- Open default app on click on the results.
+
 0.1
 ---
-2023-07-22
+2023-07-24
 
 - Initial beta release.
