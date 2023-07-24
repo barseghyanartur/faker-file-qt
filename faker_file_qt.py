@@ -258,17 +258,15 @@ def open_file_with_default_app(file_path: str) -> None:
 
 
 class FakerFileApp(QWidget):
-    def __init__(self) -> None:
+    def __init__(self: "FakerFileApp") -> None:
         super().__init__()
 
+        # Initialize
         self.param_widgets = {}
-        self.param_annotations = (
-            {}
-        )  # Add this line to initialize the dictionary
-
+        self.param_annotations = {}
         self.initUI()
 
-    def initUI(self) -> None:
+    def initUI(self: "FakerFileApp") -> None:
         # Set window size
         self.setGeometry(200, 200, 960, 600)
 
@@ -308,7 +306,7 @@ class FakerFileApp(QWidget):
         layout.addWidget(self.result_widget, 3)
         self.setLayout(layout)
 
-    def show_form(self, item) -> None:
+    def show_form(self: "FakerFileApp", item: "QListWidgetItem") -> None:
         file_type = get_item_key(item)
         provider = PROVIDERS[file_type]
 
@@ -319,8 +317,8 @@ class FakerFileApp(QWidget):
         for i in reversed(range(self.form_layout.count())):
             self.form_layout.itemAt(i).widget().deleteLater()
 
-        self.param_widgets = {}  # Clear this dictionary here
-        self.param_annotations = {}  # And this one
+        self.param_widgets = {}  # Clear the value
+        self.param_annotations = {}  # Clear the value
 
         # Build the form
         for arg in method_specs.args[1:]:  # Omit 'self'
@@ -348,13 +346,12 @@ class FakerFileApp(QWidget):
         generate_button.clicked.connect(self.generate_result)
         self.form_layout.addWidget(generate_button)
 
-    def generate_result(self) -> None:
+    def generate_result(self: "FakerFileApp") -> None:
         kwargs = {}
 
         # Extract the values from the QLineEdit widgets and convert them to
         # their appropriate types.
         for param, widget in self.param_widgets.items():
-            # input_value = widget.text().strip()
             if isinstance(widget, QTextEdit):
                 input_value = widget.toPlainText().strip()
             elif isinstance(widget, QLineEdit):
@@ -372,7 +369,7 @@ class FakerFileApp(QWidget):
             if input_value:
                 kwargs[param] = converted_value
 
-        # Add the overrides here if necessary
+        # Handle the overrides
         for key, value in OVERRIDES.items():
             provider_key, method_name = key.split(".")
             if get_item_key(self.list_widget.currentItem()) == method_name:
@@ -395,7 +392,9 @@ class FakerFileApp(QWidget):
         self.result_widget.addItem(str(result_text))  # Display the result
         self.result_widget.setCurrentRow(self.result_widget.count() - 1)
 
-    def handle_result_item_click(self, item) -> None:
+    def handle_result_item_click(
+        self: "FakerFileApp", item: "QListWidgetItem"
+    ) -> None:
         open_file_with_default_app(item.text())
 
 
