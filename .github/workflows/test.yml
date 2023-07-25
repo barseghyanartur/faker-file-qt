@@ -58,7 +58,7 @@ jobs:
           - "3.8"
     steps:
     - name: Install wkhtmltopdf
-      run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0 poppler-utils xvfb-run
+      run: sudo apt-get update && sudo apt-get install -y wkhtmltopdf libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0 poppler-utils xvfb
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
