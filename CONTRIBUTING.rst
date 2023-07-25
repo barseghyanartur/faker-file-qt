@@ -1,23 +1,20 @@
 Contributor guidelines
 ======================
 
-.. _documentation: https://faker-file.readthedocs.io/#writing-documentation
-.. _testing: https://faker-file.readthedocs.io/#testing
+.. _documentation: https://faker-file-qt.readthedocs.io/#writing-documentation
+.. _testing: https://faker-file-qt.readthedocs.io/#testing
 .. _pre-commit: https://pre-commit.com/#installation
 .. _black: https://black.readthedocs.io/
 .. _isort: https://pycqa.github.io/isort/
 .. _doc8: https://doc8.readthedocs.io/
 .. _ruff: https://beta.ruff.rs/docs/
 .. _pip-tools: https://pip-tools.readthedocs.io/
-.. _issues: https://github.com/barseghyanartur/faker-file/issues
-.. _discussions: https://github.com/barseghyanartur/faker-file/discussions
-.. _pull request: https://github.com/barseghyanartur/faker-file/pulls
-.. _support: https://faker-file.readthedocs.io/#support
-.. _installation: https://faker-file.readthedocs.io/#installation
-.. _features: https://faker-file.readthedocs.io/#features
-.. _recipes: https://faker-file.readthedocs.io/en/latest/recipes.html
-.. _quick start: https://faker-file.readthedocs.io/en/latest/quick_start.html
-.. _prerequisites: https://faker-file.readthedocs.io/#prerequisites
+.. _issues: https://github.com/barseghyanartur/faker-file-qt/issues
+.. _discussions: https://github.com/barseghyanartur/faker-file-qt/discussions
+.. _pull request: https://github.com/barseghyanartur/faker-file-qt/pulls
+.. _support: https://faker-file-qt.readthedocs.io/#support
+.. _installation: https://faker-file-qt.readthedocs.io/#installation
+.. _prerequisites: https://faker-file-qt.readthedocs.io/#prerequisites
 
 Developer prerequisites
 -----------------------
@@ -43,18 +40,18 @@ Code standards
 
 .. code-block:: sh
 
-    ./scripts/black.sh
-    ./scripts/doc8.sh
-    ./scripts/isort.sh
-    ./scripts/ruff.sh
+    make black
+    make doc8
+    make isort
+    make ruff
 
 Requirements
 ------------
-Requirements are compiled using `pip-tools`_.
+Requirements are installed as follows.
 
 .. code-block:: sh
 
-    ./scripts/compile_requirements.sh
+    make install
 
 Virtual environment
 -------------------
@@ -81,7 +78,7 @@ all supported environments. For that use tox.
 
 .. code-block:: sh
 
-    tox
+    make test
 
 In any case, GitHub Actions will catch potential errors, but using tox speeds
 things up.
@@ -120,8 +117,7 @@ For example:
 
 - Check the licenses of added dependencies carefully and make sure to list them
   in `prerequisites`_.
-- Make sure to update the documentation (check whether the `installation`_,
-  `features`_, `recipes`_ and `quick start`_ require changes).
+- Make sure to update the documentation.
 
 Questions
 ---------

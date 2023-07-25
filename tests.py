@@ -25,6 +25,7 @@ from faker_file.providers.jpeg_file import (
     GraphicJpegFileProvider,
     JpegFileProvider,
 )
+from faker_file.providers.json_file import JsonFileProvider
 from faker_file.providers.mp3_file import Mp3FileProvider
 from faker_file.providers.odp_file import OdpFileProvider
 from faker_file.providers.ods_file import OdsFileProvider
@@ -86,6 +87,7 @@ class TestFakerFileApp(unittest.TestCase):
         GraphicWebpFileProvider.graphic_webp_file.__name__,
         IcoFileProvider.ico_file.__name__,
         JpegFileProvider.jpeg_file.__name__,
+        JsonFileProvider.json_file.__name__,
         OdpFileProvider.odp_file.__name__,
         OdsFileProvider.ods_file.__name__,
         OdtFileProvider.odt_file.__name__,
