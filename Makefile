@@ -11,9 +11,17 @@ clean:
 	rm -rf htmlcov
 	rm -rf .tox/
 
+# Clean virtualenv
+clean-venv:
+	pip freeze | while read p; do pip uninstall -y "$p"; done
+
 # Install the package locally for development
 install:
-	pip install -e .
+	pip install -e .[dev]
+
+# Install the package locally for development
+uninstall:
+	pip uninstall faker-file-qt -y
 
 # Run tests
 test:

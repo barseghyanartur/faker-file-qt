@@ -15,6 +15,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.1.3
+-----
+2023-07-28
+
+- Set minimal required version of faker-file to 0.17.2.
+- Add menus.
+
 0.1.2
 -----
 2023-07-26

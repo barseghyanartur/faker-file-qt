@@ -2,7 +2,7 @@ import os
 
 from setuptools import setup
 
-version = "0.1.2"
+version = "0.1.3"
 
 try:
     readme = open(os.path.join(os.path.dirname(__file__), "README.rst")).read()
@@ -11,10 +11,10 @@ except OSError:
 
 install_requires = [
     "Faker",
-    "faker-file[common]",
+    "faker-file[common]>=0.17.2",
     "QDarkStyle",
     "PyQt5",
-    "Pillow<=9.5.0",
+    "Pillow<10.0.0",
 ]
 
 extras_require = {

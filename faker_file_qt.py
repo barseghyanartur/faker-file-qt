@@ -1,6 +1,7 @@
 import ast
 import inspect
 import logging
+import os
 import platform
 import subprocess
 import sys
@@ -58,8 +59,10 @@ from faker_file.providers.webp_file import (
 from faker_file.providers.xlsx_file import XlsxFileProvider
 from faker_file.providers.xml_file import XmlFileProvider
 from faker_file.providers.zip_file import ZipFileProvider
+from faker_file.storages.filesystem import FileSystemStorage
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import (
+    QAction,
     QApplication,
     QFormLayout,
     QGroupBox,
@@ -68,6 +71,8 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QListWidget,
     QListWidgetItem,
+    QMainWindow,
+    QMessageBox,
     QPushButton,
     QSizePolicy,
     QTextEdit,
@@ -75,8 +80,8 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-__title__ = "faker_file_qt"
-__version__ = "0.1.2"
+__title__ = "faker-file-qt"
+__version__ = "0.1.3"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2022-2023 Artur Barseghyan"
 __license__ = "MIT"
@@ -182,6 +187,8 @@ PROVIDERS = {
     ZipFileProvider.zip_file.__name__: ZipFileProvider,
 }
 
+STORAGE = FileSystemStorage()
+
 # Names that should show a multi-line text box
 MULTI_LINE_INPUTS = [
     "content",
@@ -260,7 +267,7 @@ def open_file_with_default_app(file_path: str) -> None:
         subprocess.run(("xdg-open", file_path))
 
 
-class FakerFileApp(QWidget):
+class FakerFileApp(QMainWindow):
     def __init__(self: "FakerFileApp") -> None:
         super().__init__()
 
@@ -272,6 +279,27 @@ class FakerFileApp(QWidget):
     def initUI(self: "FakerFileApp") -> None:
         # Set window size
         self.setGeometry(200, 200, 960, 720)
+
+        # Create menu bar
+        menu_bar = self.menuBar()
+
+        # Create menus
+        file_menu = menu_bar.addMenu("&File")
+        help_menu = menu_bar.addMenu("&Help")
+
+        browse_files_action = QAction("&Browse Files", self)
+        browse_files_action.setStatusTip(
+            "Open storage location using default file browser"
+        )
+        browse_files_action.triggered.connect(self.browse_files_menu_action)
+
+        about_action = QAction("&About", self)
+        about_action.setStatusTip(f"About {__title__}")
+        about_action.triggered.connect(self.about_message_menu_action)
+
+        # Add actions to menus
+        file_menu.addAction(browse_files_action)
+        help_menu.addAction(about_action)
 
         # Create a QHBoxLayout
         layout = QHBoxLayout()
@@ -317,6 +345,27 @@ class FakerFileApp(QWidget):
         layout.addWidget(form_group, 3)
         layout.addWidget(result_group, 3)
         self.setLayout(layout)
+
+        self.setCentralWidget(
+            QWidget()
+        )  # QMainWindow requires a central widget
+        self.centralWidget().setLayout(layout)
+
+    def about_message_menu_action(self):
+        QMessageBox.about(
+            self,
+            f"About {__title__}",
+            (
+                f"{__title__} version {__version__}.\n\n"
+                f"Author: {__author__}\n"
+                f"License: {__license__}\n"
+            ),
+        )
+
+    def browse_files_menu_action(self):
+        open_file_with_default_app(
+            os.path.join(STORAGE.root_path, STORAGE.rel_path)
+        )
 
     def show_form(self: "FakerFileApp", item: "QListWidgetItem") -> None:
         file_type = get_item_key(item)
