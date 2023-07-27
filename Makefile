@@ -23,6 +23,10 @@ install:
 uninstall:
 	pip uninstall faker-file-qt -y
 
+# Run app
+make run:
+	python faker_file_qt.py
+
 # Run tests
 test:
 	pytest
