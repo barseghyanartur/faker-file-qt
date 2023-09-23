@@ -5,6 +5,7 @@ import os
 import platform
 import subprocess
 import sys
+from enum import Enum
 from typing import Any, AnyStr, Dict, List, Tuple, Union, get_args, get_origin
 
 import qdarkstyle
@@ -31,11 +32,23 @@ from faker_file.providers.jpeg_file import (
     JpegFileProvider,
 )
 from faker_file.providers.json_file import JsonFileProvider
-from faker_file.providers.mp3_file import Mp3FileProvider
+from faker_file.providers.mixins.image_mixin import (
+    IMAGEKIT_IMAGE_GENERATOR,
+    PIL_IMAGE_GENERATOR,
+    WEASYPRINT_IMAGE_GENERATOR,
+)
+from faker_file.providers.mp3_file import (
+    EDGE_TTS_MP3_GENERATOR,
+    GTTS_MP3_GENERATOR,
+    Mp3FileProvider,
+)
 from faker_file.providers.odp_file import OdpFileProvider
 from faker_file.providers.ods_file import OdsFileProvider
 from faker_file.providers.odt_file import OdtFileProvider
 from faker_file.providers.pdf_file import (
+    PDFKIT_PDF_GENERATOR,
+    PIL_PDF_GENERATOR,
+    REPORTLAB_PDF_GENERATOR,
     GraphicPdfFileProvider,
     PdfFileProvider,
 )
@@ -64,6 +77,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
+    QComboBox,
     QFormLayout,
     QGroupBox,
     QHBoxLayout,
@@ -81,7 +95,7 @@ from PyQt5.QtWidgets import (
 )
 
 __title__ = "faker-file-qt"
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2022-2023 Artur Barseghyan"
 __license__ = "MIT"
@@ -114,17 +128,14 @@ OVERRIDES = {
             "content": None,
         },
     },
-    "Mp3FileProvider.mp3_file": {
-        "annotations": {
-            "mp3_generator_cls": str,
-        },
-        "model_props": {
-            "mp3_generator_cls": (
-                "faker_file.providers.mp3_file.generators"
-                ".gtts_generator.GttsMp3Generator"
-            ),
-        },
-    },
+    # "Mp3FileProvider.mp3_file": {
+    #     "annotations": {
+    #         "mp3_generator_cls": str,
+    #     },
+    #     "model_props": {
+    #         "mp3_generator_cls": GTTS_MP3_GENERATOR,
+    #     },
+    # },
     "OdtFileProvider.odt_file": {
         "annotations": {
             "content": str,
@@ -133,18 +144,103 @@ OVERRIDES = {
             "content": None,
         },
     },
-    "PdfFileProvider.pdf_file": {
-        "annotations": {
-            "pdf_generator_cls": str,
-        },
-        "model_props": {
-            "pdf_generator_cls": (
-                "faker_file.providers.pdf_file.generators"
-                ".pdfkit_generator.PdfkitPdfGenerator"
-            ),
-        },
+    # "PdfFileProvider.pdf_file": {
+    #     "annotations": {
+    #         "pdf_generator_cls": str,
+    #     },
+    #     "model_props": {
+    #         "pdf_generator_cls": PDFKIT_PDF_GENERATOR,
+    #     },
+    # },
+}
+
+
+class PdfGeneratorCls(str, Enum):
+    PIL_PDF_GENERATOR = PIL_PDF_GENERATOR
+    REPORTLAB_PDF_GENERATOR = REPORTLAB_PDF_GENERATOR
+    PDFKIT_PDF_GENERATOR = PDFKIT_PDF_GENERATOR
+
+
+class ImageGeneratorCls(str, Enum):
+    PIL_IMAGE_GENERATOR = PIL_IMAGE_GENERATOR
+    IMAGEKIT_IMAGE_GENERATOR = IMAGEKIT_IMAGE_GENERATOR
+    WEASYPRINT_IMAGE_GENERATOR = WEASYPRINT_IMAGE_GENERATOR
+
+
+class ImagekitImageGeneratorCls(str, Enum):
+    # PIL_IMAGE_GENERATOR = PIL_IMAGE_GENERATOR
+    IMAGEKIT_IMAGE_GENERATOR = IMAGEKIT_IMAGE_GENERATOR
+    # WEASYPRINT_IMAGE_GENERATOR = WEASYPRINT_IMAGE_GENERATOR
+
+
+class WeasyprintImageGeneratorCls(str, Enum):
+    # PIL_IMAGE_GENERATOR = PIL_IMAGE_GENERATOR
+    # IMAGEKIT_IMAGE_GENERATOR = IMAGEKIT_IMAGE_GENERATOR
+    WEASYPRINT_IMAGE_GENERATOR = WEASYPRINT_IMAGE_GENERATOR
+
+
+class PilImageGeneratorCls(str, Enum):
+    PIL_IMAGE_GENERATOR = PIL_IMAGE_GENERATOR
+    # IMAGEKIT_IMAGE_GENERATOR = IMAGEKIT_IMAGE_GENERATOR
+    # WEASYPRINT_IMAGE_GENERATOR = WEASYPRINT_IMAGE_GENERATOR
+
+
+class ImagekitAndPilImageGeneratorCls(str, Enum):
+    PIL_IMAGE_GENERATOR = PIL_IMAGE_GENERATOR
+    IMAGEKIT_IMAGE_GENERATOR = IMAGEKIT_IMAGE_GENERATOR
+    # WEASYPRINT_IMAGE_GENERATOR = WEASYPRINT_IMAGE_GENERATOR
+
+
+class WeasyprintAndPilImageGeneratorCls(str, Enum):
+    PIL_IMAGE_GENERATOR = PIL_IMAGE_GENERATOR
+    # IMAGEKIT_IMAGE_GENERATOR = IMAGEKIT_IMAGE_GENERATOR
+    WEASYPRINT_IMAGE_GENERATOR = WEASYPRINT_IMAGE_GENERATOR
+
+
+class Mp3GeneratorCls(str, Enum):
+    GTTS_MP3_GENERATOR = GTTS_MP3_GENERATOR
+    EDGE_TTS_MP3_GENERATOR = EDGE_TTS_MP3_GENERATOR
+
+
+SELECTS = {
+    "pdf_generator_cls": {
+        PdfFileProvider.pdf_file.__name__: [
+            __i.value for __i in PdfGeneratorCls
+        ],
+    },
+    "image_generator_cls": {
+        BmpFileProvider.bmp_file.__name__: [
+            __i.value for __i in WeasyprintAndPilImageGeneratorCls
+        ],
+        GifFileProvider.gif_file.__name__: [
+            __i.value for __i in WeasyprintAndPilImageGeneratorCls
+        ],
+        IcoFileProvider.ico_file.__name__: [
+            __i.value for __i in ImagekitImageGeneratorCls
+        ],
+        JpegFileProvider.jpeg_file.__name__: [
+            __i.value for __i in ImageGeneratorCls
+        ],
+        PngFileProvider.png_file.__name__: [
+            __i.value for __i in ImageGeneratorCls
+        ],
+        SvgFileProvider.svg_file.__name__: [
+            __i.value for __i in ImagekitImageGeneratorCls
+        ],
+        TiffFileProvider.tiff_file.__name__: [
+            __i.value for __i in WeasyprintAndPilImageGeneratorCls
+        ],
+        WebpFileProvider.webp_file.__name__: [
+            __i.value for __i in ImageGeneratorCls
+        ],
+    },
+    "mp3_generator_cls": {
+        Mp3FileProvider.mp3_file.__name__: [
+            __i.value for __i in Mp3GeneratorCls
+        ],
     },
 }
+
 
 PROVIDERS = {
     BinFileProvider.bin_file.__name__: BinFileProvider,
@@ -385,20 +481,32 @@ class FakerFileApp(QMainWindow):
         for arg in method_specs.args[1:]:  # Omit 'self'
             if arg not in KWARGS_DROP:
                 label = QLabel(get_label_text(arg))
-                line_edit = (
-                    QTextEdit() if arg in MULTI_LINE_INPUTS else QLineEdit()
-                )
-                line_edit.setSizePolicy(
-                    QSizePolicy.Expanding, QSizePolicy.Fixed
-                )
-                line_edit.setFixedWidth(300)
 
-                self.form_layout.addWidget(label)
-                self.form_layout.addWidget(line_edit)
+                if arg in SELECTS:
+                    combo_box = QComboBox()
+                    combo_box.addItems(SELECTS[arg][file_type])
+                    self.form_layout.addWidget(label)
+                    self.form_layout.addWidget(combo_box)
+                    self.param_widgets[arg] = combo_box
+                    combo_box.setSizePolicy(
+                        QSizePolicy.Expanding, QSizePolicy.Fixed
+                    )
+                    combo_box.setFixedWidth(300)
+                else:
+                    line_edit = (
+                        QTextEdit() if arg in MULTI_LINE_INPUTS else QLineEdit()
+                    )
+                    line_edit.setSizePolicy(
+                        QSizePolicy.Expanding, QSizePolicy.Fixed
+                    )
+                    line_edit.setFixedWidth(300)
 
-                self.param_widgets[
-                    arg
-                ] = line_edit  # Store a reference to the widget
+                    self.form_layout.addWidget(label)
+                    self.form_layout.addWidget(line_edit)
+
+                    # Store a reference to the widget
+                    self.param_widgets[arg] = line_edit
+
                 self.param_annotations[arg] = method_specs.annotations.get(
                     arg, str
                 )  # Store the type annotation
@@ -413,7 +521,9 @@ class FakerFileApp(QMainWindow):
         # Extract the values from the QLineEdit widgets and convert them to
         # their appropriate types.
         for param, widget in self.param_widgets.items():
-            if isinstance(widget, QTextEdit):
+            if isinstance(widget, QComboBox):
+                input_value = widget.currentText().strip()
+            elif isinstance(widget, QTextEdit):
                 input_value = widget.toPlainText().strip()
             elif isinstance(widget, QLineEdit):
                 input_value = widget.text().strip()
