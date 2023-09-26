@@ -50,7 +50,6 @@ source_suffix = {
     ".rst": "restructuredtext",
 }
 
-
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
 
@@ -58,8 +57,8 @@ source_suffix = {
 master_doc = "index"
 
 # General information about the project.
-# project = u'faker-file'
-# copyright = u'2017, Artur Barseghyan <artur.barseghyan@gmail.com>'
+# project = u'faker-file-qt'
+# copyright = u'2023, Artur Barseghyan <artur.barseghyan@gmail.com>'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -105,12 +104,12 @@ pygments_style = "sphinx"
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
 
-
 # -- Options for HTML output ---------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = "default"
+# html_theme = "default"
+html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -185,7 +184,6 @@ html_static_path = ["_static"]
 # Output file base name for HTML help builder.
 htmlhelp_basename = "faker-file-qtdoc"
 
-
 # -- Options for LaTeX output --------------------------------------------------
 
 latex_elements = {
@@ -231,7 +229,6 @@ latex_documents = [
 # If false, no module index is generated.
 # latex_domain_indices = True
 
-
 # -- Options for manual page output --------------------------------------------
 
 # One entry per manual page. List of tuples
@@ -248,7 +245,6 @@ man_pages = [
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
-
 
 # -- Options for Texinfo output ------------------------------------------------
 
@@ -275,7 +271,6 @@ texinfo_documents = [
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 # texinfo_show_urls = 'footnote'
-
 
 # -- Options for Epub output ---------------------------------------------------
 
